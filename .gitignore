@@ -125,5 +125,6 @@ dmypy.json
 .pyre/
 
 .idea/
-split/
-merge/
+/split/
+/merge/
+/merge0/

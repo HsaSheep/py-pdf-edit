@@ -10,7 +10,8 @@ import glob
 import os
 
 # --- Parameter ---
-FILE_PDF = 'test'        # 処理したいPDFファイル名
+INFO_VERSION = "0.01"
+
 FILE_PDF_SPLIT_FOLDER = 'split'  # 分割で使うフォルダ名
 FILE_PDF_MERGE_FOLDER = 'merge'  # 結合で使うフォルダ名
 
@@ -60,8 +61,9 @@ def pdf_split(p_file, p_folder):
 # フォルダ内のPDFファイルを結合して保存
 def pdf_merge(p_file, p_folder):
     file_list = glob.glob(os.path.join(p_folder, '*.pdf'))
+    f_list = natsorted(file_list)
     file_output = PyPDF2.PdfFileMerger()
-    for file in file_list:
+    for file in f_list:
         file_output.append(file)
     file_output.write(p_file + '_merge.pdf')
     file_output.close()
@@ -69,6 +71,7 @@ def pdf_merge(p_file, p_folder):
 
 # --- MAIN ---
 if __name__ == '__main__':
+    print("--- Version: "+INFO_VERSION+" ---")
 
     mode = '0'
 
