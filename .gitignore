@@ -128,3 +128,4 @@ dmypy.json
 /split/
 /merge/
 /merge0/
+*.exe
