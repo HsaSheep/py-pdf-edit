@@ -129,3 +129,6 @@ dmypy.json
 /merge/
 /merge0/
 *.exe
+/test_merge.pdf
+/dist/
+event_log.txt
