@@ -22,10 +22,22 @@ def folder_check_make(folder_path):
         os.mkdir(folder_path)
 
 
+def list_natsort(list_var):
+    sorted_list = natsorted(list_var)
+    return sorted_list
+
+
+def list_to_text(list_var):
+    text = '\n'.join(repr(e) for e in list_var)
+    text = text.replace('\'', '')
+    text = text.replace(',', '')
+    return text
+
+
 # フォルダ内のPDFファイルのリストを表示
 def file_list_folder(p_folder):
     file_list = glob.glob(os.path.join(p_folder, '*.pdf'))
-    f_list = natsorted(file_list)
+    f_list = list_natsort(file_list)
     # print(file_list)
     if len(f_list) > 0:
         for i in range(len(f_list)):
@@ -61,7 +73,7 @@ def pdf_split(p_file, p_folder):
 # フォルダ内のPDFファイルを結合して保存
 def pdf_merge(p_file, p_folder):
     file_list = glob.glob(os.path.join(p_folder, '*.pdf'))
-    f_list = natsorted(file_list)
+    f_list = list_natsort(file_list)
     file_output = PyPDF2.PdfFileMerger()
     for file in f_list:
         file_output.append(file)
