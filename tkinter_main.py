@@ -69,7 +69,7 @@ def b_mw_infile():
 # ウィンドウ設定
 root = tkinter.Tk()
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
-root.geometry("750x750")  # ウィンドウサイズ
+root.geometry("710x750")  # ウィンドウサイズ
 
 # ウィンドウ内設定
 # フレーム作成
