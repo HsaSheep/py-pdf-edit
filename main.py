@@ -48,14 +48,14 @@ def file_list_folder(p_folder):
 
 
 # PDFファイルを回転して保存
-def pdf_roll(p_file, p_angle):
+def pdf_roll(p_file, p_angle, output_file):
     file = PyPDF2.PdfFileReader(open(p_file + '.pdf', 'rb'))
     file_output = PyPDF2.PdfFileWriter()
     for page_num in range(file.numPages):
         page = file.getPage(page_num)
         page.rotateClockwise(p_angle)
         file_output.addPage(page)
-    with open(p_file + '_roll.pdf', 'wb') as f:
+    with open(output_file + '.pdf', 'wb') as f:
         file_output.write(f)
 
 
@@ -66,18 +66,16 @@ def pdf_split(p_file, p_folder):
         page = file.getPage(page_num)
         file_output = PyPDF2.PdfFileWriter()
         file_output.addPage(page)
-        with open(p_folder + '\\' + p_file + '_split_' + str(page_num+1) + '.pdf', 'wb') as f:
+        with open(p_folder + '\\' + p_file + str(page_num+1) + '.pdf', 'wb') as f:
             file_output.write(f)
 
 
 # フォルダ内のPDFファイルを結合して保存
-def pdf_merge(p_file, p_folder):
-    file_list = glob.glob(os.path.join(p_folder, '*.pdf'))
-    f_list = list_natsort(file_list)
+def pdf_merge(f_list, p_file):
     file_output = PyPDF2.PdfFileMerger()
     for file in f_list:
         file_output.append(file)
-    file_output.write(p_file + '_merge.pdf')
+    file_output.write(p_file + '.pdf')
     file_output.close()
 
 
@@ -115,7 +113,7 @@ if __name__ == '__main__':
             roll_ang = input()
             if roll_ang.isdecimal():
                 roll_ang = int(roll_ang)
-                pdf_roll(roll_file, roll_ang)
+                pdf_roll(roll_file, roll_ang, roll_file + "_roll")
             else:
                 print("Please Type Decimal.")
 
@@ -131,7 +129,9 @@ if __name__ == '__main__':
             print("Put the PDFs in the ["+FILE_PDF_MERGE_FOLDER+"] folder.")
             print("Please Type [Output FileName] and Enter.")
             merge_file = input()
-            pdf_merge(merge_file, FILE_PDF_MERGE_FOLDER)
+            file_list = glob.glob(os.path.join(FILE_PDF_MERGE_FOLDER, '*.pdf'))
+            f_list = list_natsort(file_list)
+            pdf_merge(f_list, merge_file,)
 
         elif mode_val == 'E' or mode_val == 'e':
             print("---Exit  Mode---")

@@ -132,3 +132,4 @@ dmypy.json
 /test_merge.pdf
 /dist/
 event_log.txt
+/test_merge_split_1

@@ -15,21 +15,36 @@ select_dir = i_dir
 
 input_files = []
 list_mode = ("分解", "結合", "回転")
+default_mode = 0
+mode = list_mode[default_mode]
 
-
-# モード選択による処理
-def mode_update():
-    print("text")
+roll_degs = [90, 180, 270]
+default_deg = 0
+roll_deg = roll_degs[default_deg]
 
 
 # 基礎的な関数
-def files_select():  # 複数ファイル選択
+def mode_update():  # モード選択による処理
+    global mode
+    mode = combo_mode_string_var.get()
+    print("Mode : " + mode)
+
+
+def roll_update():  # 回転角度選択による処理
+    global roll_deg
+    roll_deg = int(combo_roll_string_var.get())
+    print("Roll Deg. : " + str(roll_deg))
+
+
+def input_files_select():  # 複数ファイル選択
     print("GUI:Input Files Select.")
     global select_dir
     f_typ = [("", "*")]
+    # f_typ = [('処理対象PDF', '*.pdf'), ('', '*')]
     files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=i_dir)
     select_dir = os.path.abspath(os.path.dirname(files[0]))
     print("     Path:   " + str(select_dir))
+    print("     Type: " + str(type(files[0])))
     print("  File(s): " + str(files))
     return files
 
@@ -55,21 +70,82 @@ def input_files_clear():  # 選択済み入力PDF一覧初期化
 
 def in_file_select():  # ボタン　入力ファイル選択
     global input_files
-    files = files_select()
-    input_files = files
+    files = input_files_select()
+    input_files += files
     input_files_list_update()
 
 
-def b_mw_infile():
+def b_mw_infile():  # 入力ファイル確認（Message Box) [debug]
     global input_files
     input_files_text = main.list_to_text(input_files)
     tkinter.messagebox.showinfo(EXE_FILE_NAME, input_files_text)
 
 
+# ファイル出力関係
+def output_file_select():  # 保存先ファイルパス取得
+    print("GUI:Output Files Path.")
+    global select_dir
+    f_type = [('結合PDF', '*.pdf'), ('', '*')]
+    save_path = tkinter.filedialog.asksaveasfile(filetypes=f_type, initialdir=select_dir)
+    select_dir = os.path.abspath(os.path.dirname(save_path))
+    print("     Path:   " + str(select_dir))
+    print("     Type: " + str(type(save_path)))
+    print("     File: " + str(save_path))
+    return save_path
+
+
+def output_dir_select():  # 保存先フォルダパス取得
+    print("GUI:Output Directory Select.")
+    global select_dir
+    save_path = tkinter.filedialog.askdirectory(initialdir=select_dir)
+    select_dir = save_path
+    print("     Path:   " + str(select_dir))
+    print("     Type: " + str(type(save_path)))
+    return save_path
+
+
+def output_label_update(message):
+    label_output_info.configure(text=message)
+
+
+def run_and_save():  # 判定、ファイル出力先指定
+    output_modes = ["file", "folder"]
+    output_label_update("出力処理中...")
+    # グローバル変数取得
+    global mode
+    global select_dir
+    global input_files
+    # 実行前モードチェック
+    input_files_num = len(input_files)
+    print("Input File Num : " + str(input_files_num))
+    print("GUI: Run [" + mode + "]")
+    if mode == "分解":
+        output_mode = output_modes[1]
+        save_path = output_dir_select()
+
+        main.pdf_split(input_files, save_path)
+
+    elif mode == "結合":
+        output_mode = output_modes[0]
+        save_path = output_file_select()
+
+        main.pdf_merge(input_files, save_path)
+
+    elif mode == "回転":
+        output_mode = output_modes[1]
+        save_path = output_dir_select()
+
+        for r_file in input_files:
+            file_name = os.path.splitext(os.path.basename(r_file))[0]
+            main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
+
+    output_label_update("完了")
+
+
 # ウィンドウ設定
 root = tkinter.Tk()
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
-root.geometry("710x750")  # ウィンドウサイズ
+root.geometry("780x750")  # ウィンドウサイズ
 
 # ウィンドウ内設定
 # フレーム作成
@@ -80,7 +156,7 @@ f1.grid(sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
 # f1内定義
 label_input = tkinter.Label(f1, text='----- 入力PDF -----')
-label_input.grid(row=0, column=0, pady=5, sticky=(tkinter.W, tkinter.E))
+label_input.grid(row=0, column=0, columnspan=3, pady=5, sticky=(tkinter.W, tkinter.E))
 list_input = tkinter.Text(f1, state='disable', height=15)
 list_input.grid(row=1, column=0, padx=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 list_input_scroll_y = tkinter.Scrollbar(f1, orient=tkinter.VERTICAL, command=list_input.yview)
@@ -94,18 +170,32 @@ btn_clear_infile = tkinter.Button(f1, text='クリア', command=input_files_clea
 btn_clear_infile.grid(row=1, column=2, padx=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
 btn_in_file_select = tkinter.Button(f1, text='選択', command=in_file_select)
-btn_in_file_select.grid(row=3, column=0, padx=10, pady=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
+btn_in_file_select.grid(row=3, column=0, padx=20, pady=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
 btn_mw_infile = tkinter.Button(f1, text='表示', command=b_mw_infile)
 btn_mw_infile.grid(row=3, column=2, sticky=(tkinter.W, tkinter.E))
 
 label_mode = tkinter.Label(f1, text='----- 編集モード選択 -----')
-label_mode.grid(row=4, column=0, pady=5, sticky=(tkinter.W, tkinter.E))
-combo_mode = tkinter.ttk.Combobox(f1, state='readonly', justify=tkinter.CENTER)
-combo_mode["values"] = list_mode
-combo_mode.current(0)
+label_mode.grid(row=4, column=0, columnspan=3, pady=5, sticky=(tkinter.W, tkinter.E))
+
+combo_mode = tkinter.ttk.Combobox(f1, values=list_mode, state='readonly', justify=tkinter.CENTER)
+combo_mode.current(default_mode)
+combo_mode_string_var = tkinter.StringVar()
+combo_mode['textvariable'] = combo_mode_string_var
 combo_mode.bind('<<ComboboxSelected>>', lambda e: mode_update())
 combo_mode.grid(row=5, column=0, padx=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
+combo_roll = tkinter.ttk.Combobox(f1, values=roll_degs, state='readonly', justify=tkinter.CENTER)
+combo_roll.current(default_deg)
+combo_roll_string_var = tkinter.StringVar()
+combo_roll['textvariable'] = combo_roll_string_var
+combo_roll.bind('<<ComboboxSelected>>', lambda e: roll_update())
+combo_roll.grid(row=5, column=2, sticky=(tkinter.W, tkinter.E))
+
+btn_save_path = tkinter.Button(f1, text='実行', command=run_and_save)
+btn_save_path.grid(row=6, column=0, columnspan=3, padx=20, pady=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
+
+label_output_info = tkinter.Label(f1, text='')
+label_output_info.grid(row=7, column=0, columnspan=3, pady=10, sticky=(tkinter.W, tkinter.E))
 
 root.mainloop()  # ウィンドウ表示
