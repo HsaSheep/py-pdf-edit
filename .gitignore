@@ -125,11 +125,10 @@ dmypy.json
 .pyre/
 
 .idea/
+
+event_log.txt
+*.pdf
 /split/
 /merge/
 /merge0/
-*.exe
-/test_merge.pdf
-/dist/
-event_log.txt
 /test_merge_split_1
