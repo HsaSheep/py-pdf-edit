@@ -10,7 +10,7 @@ import glob
 import os
 
 # --- Parameter ---
-INFO_VERSION = "0.01"
+INFO_VERSION = "0.2"
 
 FILE_PDF_SPLIT_FOLDER = 'split'  # 分割で使うフォルダ名
 FILE_PDF_MERGE_FOLDER = 'merge'  # 結合で使うフォルダ名
@@ -48,34 +48,35 @@ def file_list_folder(p_folder):
 
 
 # PDFファイルを回転して保存
-def pdf_roll(p_file, p_angle, output_file):
-    file = PyPDF2.PdfFileReader(open(p_file + '.pdf', 'rb'))
+def pdf_roll(p_file, p_angle, output_pdf):
+    file = PyPDF2.PdfFileReader(open(p_file, 'rb'))
     file_output = PyPDF2.PdfFileWriter()
     for page_num in range(file.numPages):
         page = file.getPage(page_num)
         page.rotateClockwise(p_angle)
         file_output.addPage(page)
-    with open(output_file + '.pdf', 'wb') as f:
+    with open(output_pdf, 'wb') as f:
         file_output.write(f)
 
 
 # PDFファイルをページごとに分割して保存
-def pdf_split(p_file, p_folder):
-    file = PyPDF2.PdfFileReader(open(p_file + '.pdf', 'rb'))
+def pdf_split(p_file, output_folder):
+    filename = os.path.basename(p_file)[:-4]
+    file = PyPDF2.PdfFileReader(open(p_file, 'rb'))
     for page_num in range(file.numPages):
         page = file.getPage(page_num)
         file_output = PyPDF2.PdfFileWriter()
         file_output.addPage(page)
-        with open(p_folder + '\\' + p_file + str(page_num+1) + '.pdf', 'wb') as f:
+        with open(os.path.join(output_folder, filename + "_p" + str(page_num+1) + ".pdf"), 'wb') as f:
             file_output.write(f)
 
 
-# フォルダ内のPDFファイルを結合して保存
-def pdf_merge(f_list, p_file):
+# PDFファイルを結合して保存
+def pdf_merge(f_list, output_pdf):
     file_output = PyPDF2.PdfFileMerger()
     for file in f_list:
         file_output.append(file)
-    file_output.write(p_file + '.pdf')
+    file_output.write(output_pdf)
     file_output.close()
 
 
@@ -113,7 +114,7 @@ if __name__ == '__main__':
             roll_ang = input()
             if roll_ang.isdecimal():
                 roll_ang = int(roll_ang)
-                pdf_roll(roll_file, roll_ang, roll_file + "_roll")
+                pdf_roll(roll_file+".pdf", roll_ang, roll_file + "_r" + str(roll_ang) + ".pdf")
             else:
                 print("Please Type Decimal.")
 
@@ -121,7 +122,7 @@ if __name__ == '__main__':
             print("---Split Mode---")
             print("Please Type [Input FileName] and Enter.")
             split_file = input()
-            pdf_split(split_file, FILE_PDF_SPLIT_FOLDER)
+            pdf_split(split_file + ".pdf", FILE_PDF_SPLIT_FOLDER)
             print("Output PDFs in ["+FILE_PDF_SPLIT_FOLDER+"] folder.")
 
         elif mode_val == 'M' or mode_val == 'm':
@@ -131,7 +132,7 @@ if __name__ == '__main__':
             merge_file = input()
             file_list = glob.glob(os.path.join(FILE_PDF_MERGE_FOLDER, '*.pdf'))
             f_list = list_natsort(file_list)
-            pdf_merge(f_list, merge_file,)
+            pdf_merge(f_list, merge_file + ".pdf",)
 
         elif mode_val == 'E' or mode_val == 'e':
             print("---Exit  Mode---")

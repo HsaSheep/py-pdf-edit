@@ -7,7 +7,7 @@ import main
 
 
 EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "0.01"
+EXE_VER = "1.0"
 EXE_NAME_VER = EXE_FILE_NAME + " " + EXE_VER
 
 i_dir = os.path.abspath(os.path.dirname(__file__))
@@ -28,6 +28,11 @@ def mode_update():  # モード選択による処理
     global mode
     mode = combo_mode_string_var.get()
     print("Mode : " + mode)
+    if mode == "回転":
+        combo_roll.configure(state='readonly')
+
+    else:
+        combo_roll.configure(state='disable')
 
 
 def roll_update():  # 回転角度選択による処理
@@ -43,9 +48,9 @@ def input_files_select():  # 複数ファイル選択
     # f_typ = [('処理対象PDF', '*.pdf'), ('', '*')]
     files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=i_dir)
     select_dir = os.path.abspath(os.path.dirname(files[0]))
-    print("     Path:   " + str(select_dir))
     print("     Type: " + str(type(files[0])))
     print("  File(s): " + str(files))
+    print("     Path:   " + str(select_dir))
     return files
 
 
@@ -86,11 +91,12 @@ def output_file_select():  # 保存先ファイルパス取得
     print("GUI:Output Files Path.")
     global select_dir
     f_type = [('結合PDF', '*.pdf'), ('', '*')]
-    save_path = tkinter.filedialog.asksaveasfile(filetypes=f_type, initialdir=select_dir)
+    save_path = str(tkinter.filedialog.asksaveasfilename(filetypes=f_type, initialdir=select_dir))
     select_dir = os.path.abspath(os.path.dirname(save_path))
-    print("     Path:   " + str(select_dir))
     print("     Type: " + str(type(save_path)))
     print("     File: " + str(save_path))
+    print("     Path:   " + str(select_dir))
+
     return save_path
 
 
@@ -99,8 +105,8 @@ def output_dir_select():  # 保存先フォルダパス取得
     global select_dir
     save_path = tkinter.filedialog.askdirectory(initialdir=select_dir)
     select_dir = save_path
-    print("     Path:   " + str(select_dir))
     print("     Type: " + str(type(save_path)))
+    print("     Path:   " + str(select_dir))
     return save_path
 
 
@@ -123,7 +129,10 @@ def run_and_save():  # 判定、ファイル出力先指定
         output_mode = output_modes[1]
         save_path = output_dir_select()
 
-        main.pdf_split(input_files, save_path)
+        for file_n in input_files:
+            main.pdf_split(file_n, save_path)
+
+        os.startfile(save_path)
 
     elif mode == "結合":
         output_mode = output_modes[0]
@@ -131,15 +140,22 @@ def run_and_save():  # 判定、ファイル出力先指定
 
         main.pdf_merge(input_files, save_path)
 
+        open_path = os.path.dirname(save_path)
+        os.startfile(open_path)
+
     elif mode == "回転":
         output_mode = output_modes[1]
         save_path = output_dir_select()
 
         for r_file in input_files:
-            file_name = os.path.splitext(os.path.basename(r_file))[0]
+            file_name = os.path.basename(r_file)[:-4]
+            file_name += "_R" + str(roll_deg) + ".pdf"
             main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
 
+        os.startfile(save_path)
+
     output_label_update("完了")
+    print("GUI: Run DONE.")
 
 
 # ウィンドウ設定
@@ -176,7 +192,10 @@ btn_mw_infile = tkinter.Button(f1, text='表示', command=b_mw_infile)
 btn_mw_infile.grid(row=3, column=2, sticky=(tkinter.W, tkinter.E))
 
 label_mode = tkinter.Label(f1, text='----- 編集モード選択 -----')
-label_mode.grid(row=4, column=0, columnspan=3, pady=5, sticky=(tkinter.W, tkinter.E))
+label_mode.grid(row=4, column=0, columnspan=2, pady=5, sticky=(tkinter.W, tkinter.E))
+
+label_mode = tkinter.Label(f1, text='回転角度（時計周り）')
+label_mode.grid(row=4, column=2, sticky=(tkinter.W, tkinter.E))
 
 combo_mode = tkinter.ttk.Combobox(f1, values=list_mode, state='readonly', justify=tkinter.CENTER)
 combo_mode.current(default_mode)
@@ -185,7 +204,7 @@ combo_mode['textvariable'] = combo_mode_string_var
 combo_mode.bind('<<ComboboxSelected>>', lambda e: mode_update())
 combo_mode.grid(row=5, column=0, padx=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
-combo_roll = tkinter.ttk.Combobox(f1, values=roll_degs, state='readonly', justify=tkinter.CENTER)
+combo_roll = tkinter.ttk.Combobox(f1, values=roll_degs, state='disable', justify=tkinter.CENTER)
 combo_roll.current(default_deg)
 combo_roll_string_var = tkinter.StringVar()
 combo_roll['textvariable'] = combo_roll_string_var
