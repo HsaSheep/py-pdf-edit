@@ -7,7 +7,7 @@ import main
 
 
 EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "1.0"
+EXE_VER = "1.1"
 EXE_NAME_VER = EXE_FILE_NAME + " " + EXE_VER
 
 i_dir = os.path.abspath(os.path.dirname(__file__))
@@ -46,7 +46,7 @@ def input_files_select():  # 複数ファイル選択
     global select_dir
     f_typ = [("", "*")]
     # f_typ = [('処理対象PDF', '*.pdf'), ('', '*')]
-    files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=i_dir)
+    files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=select_dir)
     select_dir = os.path.abspath(os.path.dirname(files[0]))
     print("     Type: " + str(type(files[0])))
     print("  File(s): " + str(files))
@@ -161,7 +161,7 @@ def run_and_save():  # 判定、ファイル出力先指定
 # ウィンドウ設定
 root = tkinter.Tk()
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
-root.geometry("780x750")  # ウィンドウサイズ
+root.geometry("780x470")  # ウィンドウサイズ
 
 # ウィンドウ内設定
 # フレーム作成
@@ -214,7 +214,7 @@ combo_roll.grid(row=5, column=2, sticky=(tkinter.W, tkinter.E))
 btn_save_path = tkinter.Button(f1, text='実行', command=run_and_save)
 btn_save_path.grid(row=6, column=0, columnspan=3, padx=20, pady=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
 
-label_output_info = tkinter.Label(f1, text='')
-label_output_info.grid(row=7, column=0, columnspan=3, pady=10, sticky=(tkinter.W, tkinter.E))
+label_output_info = tkinter.Label(f1, text='', fg='#ffffff', bg='#000000')
+label_output_info.grid(row=7, column=0, columnspan=3, padx=20, pady=10, sticky=(tkinter.W, tkinter.E))
 
 root.mainloop()  # ウィンドウ表示
