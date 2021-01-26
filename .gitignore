@@ -128,7 +128,5 @@ dmypy.json
 
 event_log.txt
 *.pdf
-/split/
-/merge/
-/merge0/
-/test_merge_split_1
+/test_PDF/
+/poppler/
