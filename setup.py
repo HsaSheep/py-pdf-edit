@@ -6,7 +6,7 @@ from cx_Freeze import setup, Executable
 # TARGET_FILE = "main.py"
 TARGET_FILE = "tkinter_main.py"
 EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "2.0"
+EXE_VER = "2.1"
 EXE_NAME_VER = EXE_FILE_NAME+" "+EXE_VER
 
 # build_exe_options = {"packages": ["os"], "excludes": ["tkinter"]}
@@ -24,8 +24,10 @@ EXE_NAME_VER = EXE_FILE_NAME+" "+EXE_VER
 # )
 
 base = None
-# if sys.platform == "win32":
-#     base = "Win32GUI"
+
+# コンソール非表示 #
+if sys.platform == "win32":
+    base = "Win32GUI"
 
 exe = Executable(
         script=TARGET_FILE,

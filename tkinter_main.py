@@ -12,7 +12,7 @@ os.environ["PATH"] += os.pathsep + str(poppler_dir)
 
 # グローバル変数初期化
 EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "2.0"
+EXE_VER = "2.1"
 EXE_NAME_VER = EXE_FILE_NAME + " " + EXE_VER
 
 i_dir = os.path.abspath(os.path.dirname(__file__))
@@ -20,14 +20,13 @@ select_dir = i_dir
 
 input_files = []
 list_mode = ("分解", "結合", "回転", "画像変換")
-default_mode = 0
-mode = list_mode[default_mode]
+mode = list_mode[0]
 
 roll_degs = [90, 180, 270]
 default_deg = 0
 roll_deg = roll_degs[default_deg]
 
-image_mode = ["jpg(200dpi)", "jpg(600dpi)", "png(200dpi)", "png(600dpi)", "tiff(200dpi)", "tiff(600dpi)"]
+image_mode = ["jpg(100dpi)", "jpg(350dpi)", "png(100dpi)", "png(350dpi)", "tiff(100dpi)", "tiff(350dpi)"]
 image_type = "jpg"
 image_dpi = 600
 
@@ -35,19 +34,24 @@ image_dpi = 600
 # 基礎的な関数
 def mode_update():  # モード選択による処理
     global mode
+
     mode = combo_mode_string_var.get()
     print("Mode : " + mode)
     if mode == "回転":
         label_mode_config.configure(text='回転角度（時計周り）')
         combo_mode_config.configure(state='readonly', values=roll_degs)
+        combo_mode_config.current(0)
 
     elif mode == "画像変換":
         label_mode_config.configure(text='保存形式')
         combo_mode_config.configure(state='readonly', values=image_mode)
+        combo_mode_config.current(0)
 
     else:
         label_mode_config.configure(text='----------------')
         combo_mode_config.configure(state='disable')
+
+    mode_config_update()
 
 
 def mode_config_update():  # モード設定選択による処理
@@ -240,22 +244,23 @@ btn_mw_infile.grid(row=3, column=2, sticky=(tkinter.W, tkinter.E))
 label_mode = tkinter.Label(f1, text='----- 編集モード選択 -----')
 label_mode.grid(row=4, column=0, columnspan=2, pady=5, sticky=(tkinter.W, tkinter.E))
 
-label_mode_config = tkinter.Label(f1, text='回転角度（時計周り）')
+label_mode_config = tkinter.Label(f1, text='----------------')
 label_mode_config.grid(row=4, column=2, sticky=(tkinter.W, tkinter.E))
 
 combo_mode = tkinter.ttk.Combobox(f1, values=list_mode, state='readonly', justify=tkinter.CENTER)
-combo_mode.current(default_mode)
 combo_mode_string_var = tkinter.StringVar()
 combo_mode['textvariable'] = combo_mode_string_var
 combo_mode.bind('<<ComboboxSelected>>', lambda e: mode_update())
 combo_mode.grid(row=5, column=0, padx=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
+combo_mode.current(0)
 
-combo_mode_config = tkinter.ttk.Combobox(f1, values=roll_degs, state='disable', justify=tkinter.CENTER)
-combo_mode_config.current(default_deg)
+combo_mode_config = tkinter.ttk.Combobox(f1, values=["", ""], state='disable', justify=tkinter.CENTER)
 combo_mode_config_string_var = tkinter.StringVar()
 combo_mode_config['textvariable'] = combo_mode_config_string_var
 combo_mode_config.bind('<<ComboboxSelected>>', lambda e: mode_config_update())
 combo_mode_config.grid(row=5, column=2, sticky=(tkinter.W, tkinter.E))
+combo_mode_config.current(default_deg)
+
 
 btn_save_path = tkinter.Button(f1, text='実行', command=run_and_save)
 btn_save_path.grid(row=6, column=0, columnspan=3, padx=20, pady=20, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))

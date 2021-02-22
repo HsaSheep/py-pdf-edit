@@ -128,5 +128,6 @@ dmypy.json
 
 event_log.txt
 *.pdf
+*.txt
 /test_PDF/
 /poppler/
