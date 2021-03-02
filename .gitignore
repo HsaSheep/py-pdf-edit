@@ -131,3 +131,4 @@ event_log.txt
 *.txt
 /test_PDF/
 /poppler/
+/setup_nsis*
