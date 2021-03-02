@@ -4,16 +4,21 @@ import tkinter.filedialog
 import tkinter.messagebox
 import tkinter.ttk
 from pdf2image import convert_from_path
+# cx的に通らなかった
+# import icecream
+# from icecream import ic
+
 import main
+import values
 
 # pdf2image関連初期化
 poppler_dir = os.path.join(os.getcwd(), "poppler/bin")
 os.environ["PATH"] += os.pathsep + str(poppler_dir)
 
 # グローバル変数初期化
-EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "2.1"
-EXE_NAME_VER = EXE_FILE_NAME + " " + EXE_VER
+EXE_FILE_NAME = values.EXE_FILE_NAME
+EXE_VER = values.EXE_VER
+EXE_NAME_VER = values.EXE_NAME_VER
 
 i_dir = os.path.abspath(os.path.dirname(__file__))
 select_dir = i_dir
@@ -76,8 +81,7 @@ def input_files_select():  # 複数ファイル選択
     f_typ = [('処理対象PDF', '*.pdf'), ('', '*')]
     files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=select_dir)
     select_dir = os.path.abspath(os.path.dirname(files[0]))
-    print("     Type: " + str(type(files[0])))
-    print("  File(s): " + str(files))
+    print(files)
     print("     Path:   " + str(select_dir))
     return files
 
@@ -120,12 +124,15 @@ def output_file_select():  # 保存先ファイルパス取得
     global select_dir
     f_type = [('結合PDF', '*.pdf'), ('', '*')]
     save_path = str(tkinter.filedialog.asksaveasfilename(filetypes=f_type, initialdir=select_dir))
+    if save_path == "":
+        return ""
+    while save_path[-4:] == ".pdf":
+        print(save_path)
+        save_path = save_path[:-4]
     save_path += '.pdf'
     select_dir = os.path.abspath(os.path.dirname(save_path))
-    print("     Type: " + str(type(save_path)))
-    print("     File: " + str(save_path))
-    print("     Path:   " + str(select_dir))
-
+    print(save_path)
+    print(select_dir)
     return save_path
 
 
@@ -134,8 +141,8 @@ def output_dir_select():  # 保存先フォルダパス取得
     global select_dir
     save_path = tkinter.filedialog.askdirectory(initialdir=select_dir)
     select_dir = save_path
-    print("     Type: " + str(type(save_path)))
-    print("     Path:   " + str(select_dir))
+    print(save_path)
+    print(select_dir)
     return save_path
 
 
@@ -158,53 +165,57 @@ def run_and_save():  # 判定、ファイル出力先指定
     if mode == "分解":
         output_mode = output_modes[1]
         save_path = output_dir_select()
-        open_path = save_path
-
-        for file_n in input_files:
-            main.pdf_split(file_n, save_path)
+        if save_path != "":
+            open_path = save_path
+            for file_n in input_files:
+                main.pdf_split(file_n, save_path)
 
     elif mode == "結合":
         output_mode = output_modes[0]
         save_path = output_file_select()
-        open_path = os.path.dirname(save_path)
-
-        main.pdf_merge(input_files, save_path)
+        if save_path != "":
+            open_path = os.path.dirname(save_path)
+            main.pdf_merge(input_files, save_path)
 
     elif mode == "回転":
         output_mode = output_modes[1]
         save_path = output_dir_select()
-        open_path = save_path
-
-        for r_file in input_files:
-            file_name = os.path.basename(r_file)[:-4]
-            file_name += "_R" + str(roll_deg) + ".pdf"
-            main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
+        if save_path != "":
+            open_path = save_path
+            for r_file in input_files:
+                file_name = os.path.basename(r_file)[:-4]
+                file_name += "_R" + str(roll_deg) + ".pdf"
+                main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
 
     elif mode == "画像変換":
         output_mode = output_modes[1]
         save_path = output_dir_select()
-        open_path = save_path
-        global image_type
-        global image_dpi
-        print("GUI: Image Convert")
-        for p_file in input_files:
-            print(" -> Convert: "+p_file)
-            pages = convert_from_path(p_file, image_dpi)
-            for i, page in enumerate(pages):
-                print("  -> Page: " + str(i+1))
-                p_filename = os.path.basename(p_file)[:-4]
-                image_path = os.path.join(save_path, p_filename+"_"+str(i+1))
-                if image_type == "jpg":
-                    page.save(image_path+".jpg", "JPEG")
-                elif image_type == "png":
-                    page.save(image_path+".png", "PNG")
-                elif image_type == "tiff":
-                    pages[0].save(image_path+".tif", "TIFF", compression="tiff_deflate", save_all=True, append_images=pages[1:])
-                    break
-        print("GUI: Image Convert Done.")
+        if save_path != "":
+            open_path = save_path
+            global image_type
+            global image_dpi
+            print("GUI: Image Convert")
+            for p_file in input_files:
+                print(" -> Convert: "+p_file)
+                pages = convert_from_path(p_file, image_dpi)
+                for i, page in enumerate(pages):
+                    print("  -> Page: " + str(i+1))
+                    p_filename = os.path.basename(p_file)[:-4]
+                    image_path = os.path.join(save_path, p_filename+"_"+str(i+1))
+                    if image_type == "jpg":
+                        page.save(image_path+".jpg", "JPEG")
+                    elif image_type == "png":
+                        page.save(image_path+".png", "PNG")
+                    elif image_type == "tiff":
+                        pages[0].save(image_path+".tif", "TIFF", compression="tiff_deflate", save_all=True, append_images=pages[1:])
+                        break
+            print("GUI: Image Convert Done.")
 
-    output_label_update("完了")
-    os.startfile(open_path)
+    if save_path != "":
+        os.startfile(open_path)
+        output_label_update("完了")
+    else:
+        output_label_update("キャンセルしました")
     print("GUI: Run DONE.")
 
 

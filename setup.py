@@ -3,11 +3,13 @@
 import sys
 from cx_Freeze import setup, Executable
 
+import values
+
 # TARGET_FILE = "main.py"
 TARGET_FILE = "tkinter_main.py"
-EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "2.1"
-EXE_NAME_VER = EXE_FILE_NAME+" "+EXE_VER
+EXE_FILE_NAME = values.EXE_FILE_NAME
+EXE_VER = values.EXE_VER
+EXE_NAME_VER = values.EXE_NAME_VER
 
 # build_exe_options = {"packages": ["os"], "excludes": ["tkinter"]}
 #
