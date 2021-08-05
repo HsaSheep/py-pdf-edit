@@ -31,7 +31,8 @@ roll_degs = [90, 180, 270]
 default_deg = 0
 roll_deg = roll_degs[default_deg]
 
-image_mode = ["jpg(100dpi)", "jpg(350dpi)", "png(100dpi)", "png(350dpi)", "tiff(100dpi)", "tiff(350dpi)"]
+image_mode = ["jpg(100dpi)", "jpg(350dpi)", "jpg(600dpi)", "png(100dpi)", "png(350dpi)", "png(600dpi)", "tiff(100dpi)",
+              "tiff(350dpi)", "tiff(600dpi)"]
 image_type = "jpg"
 image_dpi = 600
 
@@ -49,7 +50,8 @@ def mode_update():  # モード選択による処理
 
     elif mode == "画像変換":
         label_mode_config.configure(text='保存形式')
-        combo_mode_config.configure(state='readonly', values=image_mode)
+        # combo_mode_config.configure(state='readonly', values=image_mode)
+        combo_mode_config.configure(state='normal', values=image_mode)
         combo_mode_config.current(0)
 
     else:
@@ -178,6 +180,9 @@ def run_and_save():  # 判定、ファイル出力先指定
             main.pdf_merge(input_files, save_path)
 
     elif mode == "回転":
+        global roll_deg
+        roll_deg = int(combo_mode_config_string_var.get())
+        print("Roll Deg. : " + str(roll_deg))
         output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
@@ -188,12 +193,16 @@ def run_and_save():  # 判定、ファイル出力先指定
                 main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
 
     elif mode == "画像変換":
+        global image_type
+        global image_dpi
+        image_type = combo_mode_config_string_var.get()
+        image_dpi = int(image_type[-7:-4])
+        image_type = image_type[0:-8]
+        print("ImageSetting: Type... " + image_type + " DPI... " + str(image_dpi))
         output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
             open_path = save_path
-            global image_type
-            global image_dpi
             print("GUI: Image Convert")
             for p_file in input_files:
                 print(" -> Convert: "+p_file)
