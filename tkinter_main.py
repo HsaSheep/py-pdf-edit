@@ -3,6 +3,8 @@ import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 import tkinter.ttk
+import sys
+import tkinterdnd2 as tkdnd
 from pdf2image import convert_from_path
 # cx的に通らなかった
 # import icecream
@@ -110,6 +112,15 @@ def input_files_clear():  # 選択済み入力PDF一覧初期化
 def in_file_select():  # ボタン　入力ファイル選択
     global input_files
     files = input_files_select()
+    print(files)
+    input_files += files
+    input_files_list_update()
+
+
+def in_file_drop(event):  # windowへのドラックアンドドロップ
+    global input_files
+    files = tuple(str(event.data).replace(os.sep, '/').split())
+    print(files)
     input_files += files
     input_files_list_update()
 
@@ -229,7 +240,10 @@ def run_and_save():  # 判定、ファイル出力先指定
 
 
 # ウィンドウ設定
-root = tkinter.Tk()
+# root = tkinter.Tk()
+root = tkdnd.Tk()
+root.drop_target_register(tkdnd.DND_FILES)
+root.dnd_bind('<<Drop>>', in_file_drop)
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
 root.geometry("780x470")  # ウィンドウサイズ
 
