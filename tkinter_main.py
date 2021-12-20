@@ -247,6 +247,9 @@ root.dnd_bind('<<Drop>>', in_file_drop)
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
 root.geometry("780x470")  # ウィンドウサイズ
 
+# tkinter ico設定
+root.iconbitmap('32x32.ico')
+
 # ウィンドウ内設定
 # フレーム作成
 f1 = tkinter.Frame(root)

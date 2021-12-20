@@ -80,6 +80,10 @@ def pdf_merge(f_list, output_pdf):
     file_output.close()
 
 
+# PDFにページ番号を追加
+# --- TODO ---
+
+
 # --- MAIN ---
 if __name__ == '__main__':
     print("--- Version: "+INFO_VERSION+" ---")
