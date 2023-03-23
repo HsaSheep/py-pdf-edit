@@ -69,13 +69,17 @@ def mode_config_update():  # モード設定選択による処理
         roll_deg = int(combo_mode_config_string_var.get())
         print("Roll Deg. : " + str(roll_deg))
     elif mode == "画像変換":
-        global image_type
-        global image_dpi
-        image_type = combo_mode_config_string_var.get()
-        image_dpi = int(image_type[-7:-4])
-        image_type = image_type[0:-8]
-        print("Image Type: " + image_type)
-        print("Image DPI : " + str(image_dpi))
+        global poppler_dir
+        if not os.path.isdir(poppler_dir):
+            output_label_update("Popplerがありません。"+poppler_dir)
+        else:
+            global image_type
+            global image_dpi
+            image_type = combo_mode_config_string_var.get()
+            image_dpi = int(image_type[-7:-4])
+            image_type = image_type[0:-8]
+            print("Image Type: " + image_type)
+            print("Image DPI : " + str(image_dpi))
 
 
 def input_files_select():  # 複数ファイル選択
@@ -119,9 +123,13 @@ def in_file_select():  # ボタン　入力ファイル選択
 
 def in_file_drop(event):  # windowへのドラックアンドドロップ
     global input_files
-    files = tuple(str(event.data).replace(os.sep, '/').split())
+    print("Drag&Drop: " + str(event.data))
+    files = list(root.tk.splitlist(event.data))
+    print(type(files))
     print(files)
+    # files_str = str(files).replace(os.sep, '/').replace("\"", "").split(",")
     input_files += files
+    print(input_files)
     input_files_list_update()
 
 

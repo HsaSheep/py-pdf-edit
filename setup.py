@@ -34,12 +34,19 @@ if sys.platform == "win32":
 exe = Executable(
         script=TARGET_FILE,
         base=base,
-        icon="32x32.ico",
+        icon="32x32.ico"
 )
+
+Options = {
+        'build_exe': {
+                'include_files': ['32x32.ico']
+        }
+}
 
 setup(
         name=EXE_FILE_NAME,
         version=EXE_VER,
         description=EXE_NAME_VER,
+        options=Options,
         executables=[exe]
 )
