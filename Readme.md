@@ -2,7 +2,7 @@
 
 tkinter + poppler + pdf2imageで
 GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像に変換を行える
-Windows10で使用するため作成したexe
+それをWindows10で使用するためcx_FreezeでExe化したもの
 
 画像変換を使用する場合、インストール後に
 インストール先フォルダ内にpopplerフォルダを作成し、
