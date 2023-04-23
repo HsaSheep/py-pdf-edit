@@ -5,25 +5,10 @@ from cx_Freeze import setup, Executable
 
 import values
 
-# TARGET_FILE = "main.py"
 TARGET_FILE = "tkinter_main.py"
 EXE_FILE_NAME = values.EXE_FILE_NAME
 EXE_VER = values.EXE_VER
 EXE_NAME_VER = values.EXE_NAME_VER
-
-# build_exe_options = {"packages": ["os"], "excludes": ["tkinter"]}
-#
-# base = None
-# if sys.platform == "win32":
-#     base = "Win32GUI"
-#
-# setup(
-#         name=EXE_FILE_NAME,
-#         version=EXE_VER,
-#         description=EXE_FILE_NAME+" "+EXE_VER,
-#         options={"build_exe": build_exe_options},
-#         executables=[Executable(TARGET_FILE, icon="32x32.ico", base=base)]
-# )
 
 base = None
 
@@ -31,22 +16,20 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
-exe = Executable(
-        script=TARGET_FILE,
-        base=base,
-        icon="32x32.ico"
+buildOption = dict(
+    include_files=["32x32.ico"]
 )
 
-Options = {
-        'build_exe': {
-                'include_files': ['32x32.ico']
-        }
-}
-
 setup(
-        name=EXE_FILE_NAME,
-        version=EXE_VER,
-        description=EXE_NAME_VER,
-        options=Options,
-        executables=[exe]
+    name=EXE_FILE_NAME,
+    version=EXE_VER,
+    description="PDF Marge, Split, Rotate and Convert IMG Tool.",
+    options=dict(build_exe=buildOption),
+                 executables=[
+                     Executable(target_name=EXE_FILE_NAME,
+                                script=TARGET_FILE,
+                                base=base,
+                                icon="32x32.ico"
+                                )
+                ]
 )

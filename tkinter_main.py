@@ -15,7 +15,7 @@ import main
 import values
 
 # pythonの標準出力をUTF-8に
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # python標準出力をテキストファイルに
 sys.stdout = open("log.txt", "w")
 # sys.stdout = sys.__stdout__
