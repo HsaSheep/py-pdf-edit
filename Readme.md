@@ -1,6 +1,6 @@
 # Py PDF Edit
 
-tkinter + PyPDF2 + poppler + pdf2imageで
+tkinter + PyPDF2 + pdf2image (+ poppler)で
 GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像に変換を行える
 
 ![表示例](img/window.png)
@@ -12,8 +12,18 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 
 画像変換を使用する場合、インストール後に
 インストール先フォルダ内にpopplerフォルダを作成し、
-poppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
+[Poppler for WIndows](https://blog.alivate.com.au/poppler-windows/)からpoppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
 フォルダ、ファイルをそのまま入れてください。
+
+例：
+<p>Tree \PATH\TO\PY-PDF-EDIT<br>
+├─img<br>
+└─poppler<br>
+&emsp;&emsp;├─bin<br>
+&emsp;&emsp;├─include<br>
+&emsp;&emsp;├─lib<br>
+&emsp;&emsp;└─share<br>
+</p>
 
 ### 2. 実行
 
@@ -75,3 +85,10 @@ poppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
 可能であればクリアボタン下の表示ボタンをクリックし、表示されたウィンドウをスクリーンショット、
 また、本来のファイルパスをメモ帳や送信時の本文にバージョンと合わせて記載し、送ってください。
 
+### 3. うまくいかない、完了にならない
+
+念の為、ファイル名やフォルダ名を英数字かつスペースなし(C:¥¥test¥test1.pdfなど)に変更し、
+再度選択、実行してください。
+また、画像変換の場合はPopplerのバージョンを確認してください。
+基本的に作成時のパッケージ等のバージョンはリポジトリ内のvalues.pyにメモしてあります。
+そのバージョンでうまくいかず、より新しいバージョンが出ている場合は新しいバージョンで試してください。
