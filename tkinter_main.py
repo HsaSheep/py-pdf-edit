@@ -41,8 +41,9 @@ roll_degs = [90, 180, 270]
 default_deg = 0
 roll_deg = roll_degs[default_deg]
 
-image_mode = ["jpg(100dpi)", "jpg(350dpi)", "jpg(600dpi)", "png(100dpi)", "png(350dpi)", "png(600dpi)", "tiff(100dpi)",
-              "tiff(350dpi)", "tiff(600dpi)"]
+image_mode = ["jpg(100dpi)", "jpg(350dpi)", "jpg(450dpi)", "jpg(600dpi)",
+              "png(100dpi)", "png(350dpi)", "png(450dpi)", "png(600dpi)",
+              "tiff(100dpi)", "tiff(350dpi)", "tiff(450dpi)", "tiff(600dpi)"]
 image_type = "jpg"
 image_dpi = 600
 
