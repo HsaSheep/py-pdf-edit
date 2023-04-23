@@ -1,9 +1,10 @@
 import os
+import io
+import sys
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 import tkinter.ttk
-import sys
 import tkinterdnd2 as tkdnd
 from pdf2image import convert_from_path
 # cx的に通らなかった
@@ -12,6 +13,13 @@ from pdf2image import convert_from_path
 
 import main
 import values
+
+# pythonの標準出力をUTF-8に
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+# python標準出力をテキストファイルに
+sys.stdout = open("log.txt", "w")
+# sys.stdout = sys.__stdout__
+# open("temp.txt", "r").read()
 
 # pdf2image関連初期化
 poppler_dir = os.path.join(os.getcwd(), "poppler/bin")
@@ -88,9 +96,12 @@ def input_files_select():  # 複数ファイル選択
     # f_typ = [("", "*")]
     f_typ = [('処理対象PDF', '*.pdf'), ('', '*')]
     files = tkinter.filedialog.askopenfilenames(filetypes=f_typ, initialdir=select_dir)
-    select_dir = os.path.abspath(os.path.dirname(files[0]))
-    print(files)
-    print("     Path:   " + str(select_dir))
+    if files:
+        select_dir = os.path.abspath(os.path.dirname(files[0]))
+        print(files)
+        print("     Path:   " + str(select_dir))
+    else:
+        print("GUI:Input Files Select is Canceled.")
     return files
 
 
@@ -245,6 +256,14 @@ def run_and_save():  # 判定、ファイル出力先指定
     else:
         output_label_update("キャンセルしました")
     print("GUI: Run DONE.")
+
+
+# 終了時処理
+def window_close():
+    # sys.stdout = open("log.txt", "w")
+    sys.stdout.close()
+    sys.stdout = sys.__stdout__
+    # open("temp.txt", "r").read()
 
 
 # ウィンドウ設定
