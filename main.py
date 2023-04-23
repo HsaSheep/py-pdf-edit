@@ -6,7 +6,7 @@
 # --- Imports ---
 from natsort import natsorted
 import PyPDF2
-import glob
+import glob 
 import os
 
 # --- Parameter ---
@@ -49,12 +49,12 @@ def file_list_folder(p_folder):
 
 # PDFファイルを回転して保存
 def pdf_roll(p_file, p_angle, output_pdf):
-    file = PyPDF2.PdfFileReader(open(p_file, 'rb'))
-    file_output = PyPDF2.PdfFileWriter()
-    for page_num in range(file.numPages):
-        page = file.getPage(page_num)
-        page.rotateClockwise(p_angle)
-        file_output.addPage(page)
+    file = PyPDF2.PdfReader(open(p_file, 'rb'), strict=False)
+    file_output = PyPDF2.PdfWriter()
+    for page_num in range(len(file.pages)):
+        page = file.pages[page_num]
+        page.rotate(p_angle)
+        file_output.add_page(page)
     with open(output_pdf, 'wb') as f:
         file_output.write(f)
 
@@ -62,18 +62,18 @@ def pdf_roll(p_file, p_angle, output_pdf):
 # PDFファイルをページごとに分割して保存
 def pdf_split(p_file, output_folder):
     filename = os.path.basename(p_file)[:-4]
-    file = PyPDF2.PdfFileReader(open(p_file, 'rb'))
-    for page_num in range(file.numPages):
-        page = file.getPage(page_num)
-        file_output = PyPDF2.PdfFileWriter()
-        file_output.addPage(page)
+    file = PyPDF2.PdfReader(open(p_file, 'rb'), strict=False)
+    for page_num in range(len(file.pages)):
+        page = file.pages[page_num]
+        file_output = PyPDF2.PdfWriter()
+        file_output.add_page(page)
         with open(os.path.join(output_folder, filename + "_p" + str(page_num+1) + ".pdf"), 'wb') as f:
             file_output.write(f)
 
 
 # PDFファイルを結合して保存
 def pdf_merge(f_list, output_pdf):
-    file_output = PyPDF2.PdfFileMerger()
+    file_output = PyPDF2.PdfMerger(strict=False)
     for file in f_list:
         file_output.append(file)
     file_output.write(output_pdf)
