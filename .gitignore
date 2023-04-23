@@ -129,6 +129,11 @@ dmypy.json
 event_log.txt
 *.pdf
 *.txt
-/test_PDF/
-/poppler/
-/setup_nsis*
+test_PDF/
+merge/
+split/
+Versionsss/
+poppler/
+setup_nsis*
+screenshot*.*
+PyPDF-Edit*.*
