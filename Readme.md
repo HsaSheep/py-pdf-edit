@@ -15,7 +15,7 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 [Poppler for Windows](https://blog.alivate.com.au/poppler-windows/)からpoppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
 フォルダ、ファイルをそのまま入れてください。
 
-例：
+例(v2.7から)：
 <p>Tree \PATH\TO\PY-PDF-EDIT\INSTALL\DIR<br>
 ├─lib<br>
 │　　└─…<br>
@@ -24,9 +24,10 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 │　　├─include<br>
 │　　├─lib<br>
 │　　└─share<br>
-├─PyPDF-Edit.exe
+├─PyPDF-Edit.exe<br>
 └─…
 </p>
+※2.6までは「PyPDF-Edit.exe」が「tkinter_main.exe」となります。
 
 ### 2. 実行
 
