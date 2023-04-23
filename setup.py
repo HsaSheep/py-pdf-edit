@@ -30,7 +30,7 @@ setup(
                                 script=TARGET_FILE,
                                 base=base,
                                 icon="32x32.ico",
-                                copyright="Copyright (C) 2023 HsaSheep",
+                                copyright="Copyright (C) 2021-2023 HsaSheep",
                                 )
                 ]
 )
