@@ -12,17 +12,20 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 
 画像変換を使用する場合、インストール後に
 インストール先フォルダ内にpopplerフォルダを作成し、
-[Poppler for WIndows](https://blog.alivate.com.au/poppler-windows/)からpoppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
+[Poppler for Windows](https://blog.alivate.com.au/poppler-windows/)からpoppler-X.XX.X_x86.7zをダウンロード、解凍し得られる
 フォルダ、ファイルをそのまま入れてください。
 
 例：
-<p>Tree \PATH\TO\PY-PDF-EDIT<br>
-├─img<br>
-└─poppler<br>
-&emsp;&emsp;├─bin<br>
-&emsp;&emsp;├─include<br>
-&emsp;&emsp;├─lib<br>
-&emsp;&emsp;└─share<br>
+<p>Tree \PATH\TO\PY-PDF-EDIT\INSTALL\DIR<br>
+├─lib<br>
+│　　└─…<br>
+├─poppler<br>
+│　　├─bin<br>
+│　　├─include<br>
+│　　├─lib<br>
+│　　└─share<br>
+├─PyPDF-Edit.exe
+└─…
 </p>
 
 ### 2. 実行
