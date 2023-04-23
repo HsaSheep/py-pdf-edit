@@ -1,5 +1,5 @@
 EXE_FILE_NAME = "PyPDF-Edit"
-EXE_VER = "2.7"
+EXE_VER = "2.71"
 EXE_NAME_VER = EXE_FILE_NAME + " " + EXE_VER
 
 # MEMO #

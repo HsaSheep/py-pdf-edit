@@ -200,11 +200,13 @@ def run_and_save():  # 判定、ファイル出力先指定
         if save_path != "":
             open_path = save_path
             for file_n in input_files:
+                output_label_update("分解保存中... ->File: " + file_n)
                 main.pdf_split(file_n, save_path)
 
     elif mode == "結合":
         output_mode = output_modes[0]
         save_path = output_file_select()
+        output_label_update("結合保存中... ※最大10分ほど時間がかかる場合があります。")
         if save_path != "":
             open_path = os.path.dirname(save_path)
             main.pdf_merge(input_files, save_path)
@@ -219,6 +221,7 @@ def run_and_save():  # 判定、ファイル出力先指定
             open_path = save_path
             for r_file in input_files:
                 file_name = os.path.basename(r_file)[:-4]
+                output_label_update("回転中... ->File: " + file_name)
                 file_name += "_R" + str(roll_deg) + ".pdf"
                 main.pdf_roll(r_file, roll_deg, os.path.join(save_path, file_name))
 
@@ -228,17 +231,22 @@ def run_and_save():  # 判定、ファイル出力先指定
         image_type = combo_mode_config_string_var.get()
         image_dpi = int(image_type[-7:-4])
         image_type = image_type[0:-8]
-        print("ImageSetting: Type... " + image_type + " DPI... " + str(image_dpi))
+        message_str = "ImageSetting: Type... " + image_type + " DPI... " + str(image_dpi)
+        print(message_str)
+        output_label_update("変換開始中...　※最大10分ほど時間がかかる場合があります。")
         output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
             open_path = save_path
             print("GUI: Image Convert")
+            output_label_update("出力処理中... [" + message_str + "] 変換開始中...")
             for p_file in input_files:
-                print(" -> Convert: "+p_file)
+                print(" -> File: "+p_file)
                 pages = convert_from_path(p_file, image_dpi)
                 for i, page in enumerate(pages):
                     print("  -> Page: " + str(i+1))
+                    output_label_update("出力処理中... [->Page: " + str(i+1) + "/" + str(enumerate(pages)) +
+                                        ", ->File: " + p_file + "] 変換開始中...")
                     p_filename = os.path.basename(p_file)[:-4]
                     image_path = os.path.join(save_path, p_filename+"_"+str(i+1))
                     if image_type == "jpg":

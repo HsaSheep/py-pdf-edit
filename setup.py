@@ -29,7 +29,8 @@ setup(
                      Executable(target_name=EXE_FILE_NAME,
                                 script=TARGET_FILE,
                                 base=base,
-                                icon="32x32.ico"
+                                icon="32x32.ico",
+                                copyright="Copyright (C) 2023 HsaSheep",
                                 )
                 ]
 )
