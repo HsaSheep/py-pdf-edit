@@ -36,12 +36,11 @@ def list_to_text(list_var):
 
 # フォルダ内のPDFファイルのリストを表示
 def file_list_folder(p_folder):
-    file_list = glob.glob(os.path.join(p_folder, '*.pdf'))
-    f_list = list_natsort(file_list)
-    # print(file_list)
-    if len(f_list) > 0:
-        for i in range(len(f_list)):
-            file_n = f_list[i]
+    f_list_sorted = list_natsort(glob.glob(os.path.join(p_folder, '*.pdf')))
+    # print(f_list)
+    if len(f_list_sorted) > 0:
+        for i in range(len(f_list_sorted)):
+            file_n = f_list_sorted[i]
             print('{0} : {1}'.format(i+1, file_n))
     else:
         print("Not Found PDF File.")
@@ -72,9 +71,9 @@ def pdf_split(p_file, output_folder):
 
 
 # PDFファイルを結合して保存
-def pdf_merge(f_list, output_pdf):
+def pdf_merge(file_list_mg, output_pdf):
     file_output = PyPDF2.PdfMerger(strict=False)
-    for file in f_list:
+    for file in file_list_mg:
         file_output.append(file)
     file_output.write(output_pdf)
     file_output.close()
@@ -153,4 +152,3 @@ if __name__ == '__main__':
 
     # ③フォルダ内のPDFファイルを結合して保存
     # pdf_merge(FILE_PDF, FILE_PDF_FOLDER)
-

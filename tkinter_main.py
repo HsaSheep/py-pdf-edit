@@ -1,5 +1,5 @@
 import os
-import io
+# import io
 import sys
 import tkinter
 import tkinter.filedialog
@@ -187,7 +187,7 @@ def output_label_update(message):
 
 
 def run_and_save():  # 判定、ファイル出力先指定
-    output_modes = ["file", "folder"]
+    # output_modes = ["file", "folder"]
     open_path = ""
     save_path = ""
     output_label_update("出力処理中...")
@@ -200,7 +200,7 @@ def run_and_save():  # 判定、ファイル出力先指定
     print("Input File Num : " + str(input_files_num))
     print("GUI: Run [" + mode + "]")
     if mode == "分解":
-        output_mode = output_modes[1]
+        # output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
             open_path = save_path
@@ -209,7 +209,7 @@ def run_and_save():  # 判定、ファイル出力先指定
                 main.pdf_split(file_n, save_path)
 
     elif mode == "結合":
-        output_mode = output_modes[0]
+        # output_mode = output_modes[0]
         save_path = output_file_select()
         output_label_update("結合保存中... ※最大10分ほど時間がかかる場合があります。")
         if save_path != "":
@@ -220,7 +220,7 @@ def run_and_save():  # 判定、ファイル出力先指定
         global roll_deg
         roll_deg = int(combo_mode_config_string_var.get())
         print("Roll Deg. : " + str(roll_deg))
-        output_mode = output_modes[1]
+        # output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
             open_path = save_path
@@ -239,7 +239,7 @@ def run_and_save():  # 判定、ファイル出力先指定
         message_str = "ImageSetting: Type... " + image_type + " DPI... " + str(image_dpi)
         print(message_str)
         output_label_update("変換開始中...　※最大10分ほど時間がかかる場合があります。")
-        output_mode = output_modes[1]
+        # output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
             open_path = save_path
