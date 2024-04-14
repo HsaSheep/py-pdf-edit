@@ -1,6 +1,6 @@
 # Py PDF Edit
 
-tkinter + PyPDF2 + pdf2image (+ poppler)で
+tkinter + pypdf(<Ver.3.1はPyPDF2) + pdf2image (+ poppler)で
 GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像に変換を行える
 
 ![表示例](img/window.png)
