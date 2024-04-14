@@ -8,13 +8,13 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 ## 使い方
 ### 1. インストール
 
-[リリースページから最新版](https://github.com/HsaSheep/py-pdf-edit/releases/latest/)をダウンロードし、インストールしてください。
+![リリースページから最新版](https://github.com/HsaSheep/py-pdf-edit/releases/latest/)をダウンロードし、インストールしてください。
 ※v3.0以前のバージョンはそれぞれ別のアプリケーションとしてインストールされますので、更新の場合はアンインストール後にインストールしてください。
 ※.zipを解凍して利用している場合、基本的に解凍したファイルを上書きで問題ありません。上書き後、挙動がおかしい場合は削除、コピーでお試しください。
 
 画像変換を使用する場合、インストール後に
 インストール先フォルダ内にpopplerフォルダを作成し、
-[Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases)からRelease-XX.XX.X-X.zipをダウンロード、解凍し得られる
+![Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases)からRelease-XX.XX.X-X.zipをダウンロード、解凍し得られる
 「poppler-XX.XX.X」フォルダ内の「Library」フォルダをPyPDF-Editインストール先ディレクトリ内の「poppler」フォルダ内にそのまま入れてください。
 ※「poppler」フォルダが存在しない場合は、一度PyPDF-Editを起動し、モード選択で「画像変換」を選択すると自動的に作成されます。
 
