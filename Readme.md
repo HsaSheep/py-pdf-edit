@@ -16,7 +16,8 @@ GUIでPDFのページごとに分解、複数のPDFを結合、回転、画像�
 インストール先フォルダ内にpopplerフォルダを作成し、
 ![Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases)からRelease-XX.XX.X-X.zipをダウンロード、解凍し得られる
 「poppler-XX.XX.X」フォルダ内の「Library」フォルダをPyPDF-Editインストール先ディレクトリ内の「poppler」フォルダ内にそのまま入れてください。
-※「poppler」フォルダが存在しない場合は、一度PyPDF-Editを起動し、モード選択で「画像変換」を選択すると自動的に作成されます。
+※「poppler」フォルダが存在しない場合は、一度PyPDF-Editを起動すると自動的に作成されます。(Ver.3.1rc1<)
+※導入していない状態で「画像変換」モードを選択すると、メッセージ表示とともに「poppler」フォルダが開かれます。
 
 例(v2.7から)：
 <p>Tree \PATH\TO\PY-PDF-EDIT\INSTALL\DIR<br>
@@ -110,3 +111,5 @@ Ver2.6まで： インストール先ディレクトリのtkinter_main.exeを実
 Ver.3.0時点で未対応です。
 新しいパッケージへ移行後に対応を検討しています。
 PyPDF2が開発終了し、ステータスがVulnerableとなっているので、Ver.3.0が最後のPyPDF2利用バージョンとなる予定です。
+> Ver.3.1以降、pypdfに移行しています。
+> また、Popplerも以前の提供元が使用できない状態だったため、Githubの配布先に変更し、更新しています。

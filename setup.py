@@ -2,7 +2,7 @@
 # UUID : import uuid str(uuid.uuid3(uuid.NAMESPACE_DNS, 'pypdfedit.hsa12.net')).upper()
 
 import sys
-import distutils
+import distutils.util
 from cx_Freeze import setup, Executable
 
 import values
@@ -14,9 +14,11 @@ EXE_NO_CUI = "True"
 # Application information
 name = EXE_FILE_NAME
 version = str(EXE_VER)
+icon = 'inc_dir/icon.ico'
+install_icon = 'inc_dir/install_icon.ico'
 author = 'HsaS'
 author_email = 'hsas@hsa12.net'
-url = 'https://github.com/HsaSheep/pyJoinLogoScpEncode'
+url = 'https://github.com/HsaSheep/py-pdf-edit'
 description = "PDF Marge, Split, Rotate and Convert IMG Tool."
 target_py = "tkinter_main.py"
 # Specify the GUID here (basically it should not be changed)
@@ -39,7 +41,9 @@ build_exe_options = {
 bdist_msi_options = {
     'upgrade_code': upgrade_code,
     'add_to_path': False,
-    'initial_target_dir': '[%s]\%s\%s' % (program_files_dir, author, name)
+    # 'install_icon': install_icon,
+    "summary_data": {"author": author, "comments": description},
+    'initial_target_dir': '[%s]\\%s\\%s' % (program_files_dir, author, name)
 }
 
 options = {
@@ -53,7 +57,6 @@ if (sys.platform == "win32") and (EXE_NO_CUI == "True"):
     base = "Win32GUI"
 else:
     base = None
-icon = 'inc_dir/icon.ico'
 
 main_exe = Executable(
     target_py,

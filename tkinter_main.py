@@ -22,7 +22,9 @@ sys.stdout = open("log.txt", "w")
 # open("temp.txt", "r").read()
 
 # pdf2image関連初期化
-poppler_dir = os.path.join(os.getcwd(), "poppler/bin")
+poppler_folder_path = os.path.join(os.getcwd(), "poppler/")
+poppler_dir = poppler_folder_path + "Library/bin"
+os.makedirs(poppler_folder_path, exist_ok=True)
 os.environ["PATH"] += os.pathsep + str(poppler_dir)
 
 # グローバル変数初期化
@@ -81,6 +83,7 @@ def mode_config_update():  # モード設定選択による処理
         global poppler_dir
         if not os.path.isdir(poppler_dir):
             output_label_update("Popplerがありません。"+poppler_dir)
+            os.startfile(poppler_folder_path)
         else:
             global image_type
             global image_dpi
