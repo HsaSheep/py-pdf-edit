@@ -1,6 +1,7 @@
 import os
 # import io
 import sys
+import subprocess
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
@@ -20,12 +21,23 @@ import values
 sys.stdout = open("log.txt", "w")
 # sys.stdout = sys.__stdout__
 # open("temp.txt", "r").read()
+print(values.EXE_NAME_VER)
 
 # pdf2image関連初期化
 poppler_folder_path = os.path.join(os.getcwd(), "poppler/")
-poppler_dir = poppler_folder_path + "Library/bin"
-os.makedirs(poppler_folder_path, exist_ok=True)
+if os.path.isdir(os.path.join(poppler_folder_path, "bin")):
+    poppler_dir = os.path.join(poppler_folder_path, "bin")
+else:
+    os.makedirs(poppler_folder_path, exist_ok=True)
+    poppler_dir = os.path.join(poppler_folder_path, "Library/bin")
+if os.path.isfile(os.path.join(poppler_dir, "pdfinfo.exe")):
+    print("Poppler path: " + poppler_dir)
+    poppler_result = subprocess.run(os.path.join(poppler_dir, "pdfinfo.exe")+" -v",
+                                    capture_output=True, text=True).stderr.split("\n")
+else:
+    poppler_result = "Poppler Not Found."
 os.environ["PATH"] += os.pathsep + str(poppler_dir)
+print("Find Poppler: " + poppler_result[0])
 
 # グローバル変数初期化
 EXE_FILE_NAME = values.EXE_FILE_NAME
@@ -81,10 +93,13 @@ def mode_config_update():  # モード設定選択による処理
         print("Roll Deg. : " + str(roll_deg))
     elif mode == "画像変換":
         global poppler_dir
+        poppler_message = "Popplerがありません。" + poppler_dir
         if not os.path.isdir(poppler_dir):
-            output_label_update("Popplerがありません。"+poppler_dir)
+            output_label_update(poppler_message)
             os.startfile(poppler_folder_path)
         else:
+            if label_output_info.cget("text") == poppler_message:
+                output_label_update("Popplerを確認しました。")
             global image_type
             global image_dpi
             image_type = combo_mode_config_string_var.get()
@@ -241,7 +256,7 @@ def run_and_save():  # 判定、ファイル出力先指定
         image_type = image_type[0:-8]
         message_str = "ImageSetting: Type... " + image_type + " DPI... " + str(image_dpi)
         print(message_str)
-        output_label_update("変換開始中...　※最大10分ほど時間がかかる場合があります。")
+        output_label_update("変換開始中...　※DPI及びページ数により時間がかかる場合があります。")
         # output_mode = output_modes[1]
         save_path = output_dir_select()
         if save_path != "":
