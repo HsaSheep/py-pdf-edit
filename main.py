@@ -1,8 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 # --- Imports ---
 from natsort import natsorted
 import pypdf
@@ -14,6 +9,7 @@ INFO_VERSION = "0.2"
 
 FILE_PDF_SPLIT_FOLDER = 'split'  # 分割で使うフォルダ名
 FILE_PDF_MERGE_FOLDER = 'merge'  # 結合で使うフォルダ名
+FILE_PDF_ENCRYPT_FOLDER = 'encrypt'  # 暗号化で使うフォルダ名
 
 
 # PDFファイルを入れるフォルダを作成
@@ -44,6 +40,16 @@ def file_list_folder(p_folder):
             print('{0} : {1}'.format(i+1, file_n))
     else:
         print("Not Found PDF File.")
+
+
+# PDFファイルの暗号化
+def pdf_encrypt(p_file, p_pass, output_pdf, p_pass_owner=None):
+    print("")
+
+
+# PDFファイルの暗号化確認、復号化
+def pdf_decrypt(p_file, p_pass, output_pdf, p_pass_owner=None):
+    print("")
 
 
 # PDFファイルを回転して保存

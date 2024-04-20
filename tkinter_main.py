@@ -22,6 +22,7 @@ sys.stdout = open("log.txt", "w")
 # sys.stdout = sys.__stdout__
 # open("temp.txt", "r").read()
 print(values.EXE_NAME_VER)
+print("python: " + sys.version)
 
 # pdf2image関連初期化
 poppler_folder_path = os.path.join(os.getcwd(), "poppler/")

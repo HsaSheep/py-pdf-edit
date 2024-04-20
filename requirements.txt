@@ -1,3 +1,4 @@
+# Python ~= 3.11.8
 natsort~=8.4.0
 cx_Freeze~=7.0.0rc0
 tkinterdnd2~=0.3.0
