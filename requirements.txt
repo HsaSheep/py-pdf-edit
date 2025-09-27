@@ -1,6 +1,6 @@
 # Python ~= 3.11.8
 natsort~=8.4.0
-cx_Freeze~=7.0.0rc0
-tkinterdnd2~=0.3.0
+cx_Freeze~=8.4.1
+tkinterdnd2~=0.4.3
 pdf2image~=1.17.0
-pypdf~=4.2.0
+pypdf~=6.1.0
