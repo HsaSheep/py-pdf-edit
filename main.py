@@ -1,16 +1,20 @@
-# --- Imports ---
+# --- Import ---
 from natsort import natsorted
 import pypdf
 import glob 
 import os
+import sys
 
 # --- Parameter ---
 INFO_VERSION = "0.2"
-
 FILE_PDF_SPLIT_FOLDER = 'split'  # 分割で使うフォルダ名
 FILE_PDF_MERGE_FOLDER = 'merge'  # 結合で使うフォルダ名
 FILE_PDF_ENCRYPT_FOLDER = 'encrypt'  # 暗号化で使うフォルダ名
 
+# --- Init ---
+sys.setrecursionlimit(sys.getrecursionlimit() * 5)
+
+# --- Function ---
 
 # PDFファイルを入れるフォルダを作成
 def folder_check_make(folder_path):
@@ -78,7 +82,7 @@ def pdf_split(p_file, output_folder):
 
 # PDFファイルを結合して保存
 def pdf_merge(file_list_mg, output_pdf):
-    file_output = pypdf.PdfMerger(strict=False)
+    file_output = pypdf.PdfWriter()
     for file in file_list_mg:
         file_output.append(file)
     file_output.write(output_pdf)
