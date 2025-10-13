@@ -5,18 +5,23 @@ import glob
 import os
 import sys
 
-# --- Parameter ---
-INFO_VERSION = "0.2"
+### --- Parameter ---
+INFO_VERSION = "0.3"
 FILE_PDF_SPLIT_FOLDER = 'split'  # 分割で使うフォルダ名
 FILE_PDF_MERGE_FOLDER = 'merge'  # 結合で使うフォルダ名
 FILE_PDF_ENCRYPT_FOLDER = 'encrypt'  # 暗号化で使うフォルダ名
 
-# --- Init ---
+### --- Init ---
 sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
-# --- Function ---
+### --- Function ---
 
-# PDFファイルを入れるフォルダを作成
+### インポートしているpackageのバージョン出力
+def import_package_version():
+    string_import_package_version: str = "pypdf: " + pypdf.__version__
+    return string_import_package_version
+
+### PDFファイルを入れるフォルダを作成
 def folder_check_make(folder_path):
     if not os.path.exists(folder_path):
         os.mkdir(folder_path)
@@ -34,7 +39,7 @@ def list_to_text(list_var):
     return text
 
 
-# フォルダ内のPDFファイルのリストを表示
+### フォルダ内のPDFファイルのリストを表示
 def file_list_folder(p_folder):
     f_list_sorted = list_natsort(glob.glob(os.path.join(p_folder, '*.pdf')))
     # print(f_list)
@@ -46,17 +51,17 @@ def file_list_folder(p_folder):
         print("Not Found PDF File.")
 
 
-# PDFファイルの暗号化
+### PDFファイルの暗号化
 def pdf_encrypt(p_file, p_pass, output_pdf, p_pass_owner=None):
     print("")
 
 
-# PDFファイルの暗号化確認、復号化
+### PDFファイルの暗号化確認、復号化
 def pdf_decrypt(p_file, p_pass, output_pdf, p_pass_owner=None):
     print("")
 
 
-# PDFファイルを回転して保存
+### PDFファイルを回転して保存
 def pdf_roll(p_file, p_angle, output_pdf):
     file = pypdf.PdfReader(open(p_file, 'rb'), strict=False)
     file_output = pypdf.PdfWriter()
@@ -68,7 +73,7 @@ def pdf_roll(p_file, p_angle, output_pdf):
         file_output.write(f)
 
 
-# PDFファイルをページごとに分割して保存
+### PDFファイルをページごとに分割して保存
 def pdf_split(p_file, output_folder):
     filename = os.path.basename(p_file)[:-4]
     file = pypdf.PdfReader(open(p_file, 'rb'), strict=False)
@@ -80,7 +85,7 @@ def pdf_split(p_file, output_folder):
             file_output.write(f)
 
 
-# PDFファイルを結合して保存
+### PDFファイルを結合して保存
 def pdf_merge(file_list_mg, output_pdf):
     file_output = pypdf.PdfWriter()
     for file in file_list_mg:
@@ -89,11 +94,11 @@ def pdf_merge(file_list_mg, output_pdf):
     file_output.close()
 
 
-# PDFにページ番号を追加
-# --- TODO ---
+### PDFにページ番号を追加
+### --- TODO ---
 
 
-# --- MAIN ---
+### --- MAIN ---
 if __name__ == '__main__':
     print("--- Version: "+INFO_VERSION+" ---")
 
@@ -154,11 +159,13 @@ if __name__ == '__main__':
         else:
             print("----------------")
 
-    # ①PDFファイルを回転して保存
-    # pdf_roll(FILE_PDF, 90)
+### Usage:
 
-    # ②PDFファイルをページごとに分割して保存
-    # pdf_split(FILE_PDF, FILE_PDF_FOLDER)
+### ①PDFファイルを回転して保存
+### pdf_roll(FILE_PDF, 90)
 
-    # ③フォルダ内のPDFファイルを結合して保存
-    # pdf_merge(FILE_PDF, FILE_PDF_FOLDER)
+### ②PDFファイルをページごとに分割して保存
+### pdf_split(FILE_PDF, FILE_PDF_FOLDER)
+
+### ③フォルダ内のPDFファイルを結合して保存
+### pdf_merge(FILE_PDF, FILE_PDF_FOLDER)

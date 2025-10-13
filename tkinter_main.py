@@ -1,5 +1,4 @@
 import os
-# import io
 import sys
 import subprocess
 import tkinter
@@ -8,23 +7,31 @@ import tkinter.messagebox
 import tkinter.ttk
 from tkinterdnd2 import Tk, DND_FILES
 from pdf2image import convert_from_path
-# cx的に通らなかった
+
+### cx的に通らなかった
 # import icecream
 # from icecream import ic
 
+### CUIベースのpypdf操作用pyと、バージョン等の記載用pyをインポート
 import main
 import values
 
-# pythonの標準出力をUTF-8に
+### pythonの標準出力をUTF-8に
+# import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-# python標準出力をテキストファイルに
+
+### python標準出力をテキストファイルに
 sys.stdout = open("log.txt", "w")
 # sys.stdout = sys.__stdout__
 # open("temp.txt", "r").read()
+
+### 各種バージョンをログ(標準入出力)へ出力
 print(values.EXE_NAME_VER)
 print("python: " + sys.version)
+### main.pyで利用している各種バージョンをログへ出力
+print(main.import_package_version())
 
-# pdf2image関連初期化
+### pdf2image関連初期化
 poppler_folder_path = os.path.join(os.getcwd(), "poppler/")
 if os.path.isdir(os.path.join(poppler_folder_path, "bin")):
     poppler_dir = os.path.join(poppler_folder_path, "bin")
@@ -40,7 +47,7 @@ else:
 os.environ["PATH"] += os.pathsep + str(poppler_dir)
 print("Find Poppler: " + poppler_result[0])
 
-# グローバル変数初期化
+### グローバル変数初期化
 EXE_FILE_NAME = values.EXE_FILE_NAME
 EXE_VER = values.EXE_VER
 EXE_NAME_VER = values.EXE_NAME_VER
@@ -63,7 +70,7 @@ image_type = "jpg"
 image_dpi = 600
 
 
-# 基礎的な関数
+### 基礎的な関数
 def mode_update():  # モード選択による処理
     global mode
 
@@ -125,7 +132,7 @@ def input_files_select():  # 複数ファイル選択
     return files
 
 
-# 処理対象ファイル
+### 処理対象ファイル
 def input_files_list_update():  # 選択済み入力PDF一覧表示更新
     global input_files
     print("GUI:[Input_textbox] Update.")
@@ -173,7 +180,7 @@ def b_mw_infile():  # 入力ファイル確認（Message Box) [debug]
         tkinter.messagebox.showinfo(EXE_FILE_NAME, input_files_text)
 
 
-# ファイル出力関係
+### ファイル出力関係
 def output_file_select():  # 保存先ファイルパス取得
     print("GUI:Output Files Path.")
     global select_dir
@@ -291,7 +298,7 @@ def run_and_save():  # 判定、ファイル出力先指定
     print("GUI: Run DONE.")
 
 
-# 終了時処理
+### 終了時処理
 def window_close():
     # sys.stdout = open("log.txt", "w")
     sys.stdout.close()
@@ -299,7 +306,7 @@ def window_close():
     # open("temp.txt", "r").read()
 
 
-# ウィンドウ設定
+### ウィンドウ設定
 # root = tkinter.Tk()
 root = Tk()
 root.drop_target_register(DND_FILES)
@@ -307,17 +314,17 @@ root.dnd_bind('<<Drop>>', in_file_drop)
 root.title(EXE_NAME_VER)  # ウィンドウタイトル
 root.geometry("780x470")  # ウィンドウサイズ
 
-# tkinter ico設定
+### tkinter ico設定
 root.iconbitmap('inc_dir/icon.ico')
 
-# ウィンドウ内設定
-# フレーム作成
+### ウィンドウ内設定
+### フレーム作成
 f1 = tkinter.Frame(root)
 f1.rowconfigure(1, weight=1)
 f1.columnconfigure(0, weight=1)
 f1.grid(sticky=tkinter.N+tkinter.W+tkinter.S+tkinter.E)
 
-# f1内定義
+### f1内定義
 label_input = tkinter.Label(f1, text='----- 入力PDF -----')
 label_input.grid(row=0, column=0, columnspan=3, pady=5, sticky=tkinter.W+tkinter.E)
 list_input = tkinter.Text(f1, state='disabled', wrap='none', height=15)
