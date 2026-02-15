@@ -1,4 +1,4 @@
-# BUILD : python build.py bdist_msi
+# BUILD : python setup.py bdist_msi
 # UUID : import uuid str(uuid.uuid3(uuid.NAMESPACE_DNS, 'pypdfedit.hsa12.net')).upper()
 
 import sys
