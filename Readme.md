@@ -113,3 +113,16 @@ Ver.3.0時点で未対応です。
 PyPDF2が開発終了し、ステータスがVulnerableとなっているので、Ver.3.0が最後のPyPDF2利用バージョンとなる予定です。
 > Ver.3.1以降、pypdfに移行しています。
 > また、Popplerも以前の提供元が使用できない状態だったため、Githubの配布先に変更し、更新しています。
+
+
+## build
+* build時は下記のように実行してください
+```plaintext:
+python setup.py bdist_msi
+```
+
+* requirements.txt更新のため、開発環境（venv等）のpipパッケージバージョンを確認するには下記を実行してください。
+> requirements.txt以外の名前は.gitignoreによって無視されます（例：requirements2.txt）
+```plaintext:
+pip freeze > requirements2.txt
+```

@@ -137,3 +137,4 @@ poppler/
 setup_nsis*
 screenshot*.*
 PyPDF-Edit*.*
+requirements*.txt
